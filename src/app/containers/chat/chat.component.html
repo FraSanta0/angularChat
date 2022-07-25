@@ -1,0 +1,46 @@
+<div class="wrapper" style="margin-left: 30px;">
+  <app-username
+    (userNameEvent)="userNameUpdate($event)"
+    *ngIf="!userName"
+  ></app-username>
+  <div class="div-chat">
+    <h1>component programming - chat app</h1>
+    <div class="chatbox">
+      <div class="chatbox__user-list">
+        <h2>user list</h2>
+        <div class="chatbox__user--active" *ngFor="let user of userList">
+          <p>{{ user }}</p>
+        </div>
+      </div>
+      <div class="messages_list">
+        <div
+          class="chatbox__messages"
+          *ngFor="let msg of messageList"
+          [ngClass]="{ mine: msg.mine }"
+        >
+
+
+
+        <div class="container" *ngIf="msg.mine==true">
+          <img src="/w3images/bandmember.jpg" alt="Avatar">
+          <h5>{{ msg.userName }}</h5>
+          <p>{{ msg.message }}</p>
+          <span class="time-right">11:00</span>
+        </div>
+
+
+        <div class="container darker" *ngIf="msg.mine==false">
+          <img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right">
+          <h5>{{ msg.userName }}</h5>
+          <p>{{ msg.message }}</p>
+          <span class="time-left">11:01</span>
+        </div>
+
+      </div>
+      </div>
+    </div>
+    <input type="text" [(ngModel)]="message" />
+    <button (click)="sendMessage()">Send</button>
+  </div>
+</div>
+
