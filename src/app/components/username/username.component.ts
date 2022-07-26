@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
@@ -9,14 +10,23 @@ export class UsernameComponent implements OnInit {
   @Output() userNameEvent = new EventEmitter<string>();
 
   userName ="";
+  psw ="";
+  urlAccount="http://santaniellofrancesco.altervista.org/angularChat/api/account/readAccountPsw.php";
+  accountList = { ID_account: 0, name: "", avatar: "", mail: "", psw: ""};
 
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   ngOnInit(): void {
   }
 
   setUserName() : void{
-    this.userNameEvent.emit(this.userName);
+    this.http.get<any>(this.urlAccount+"?psw="+this.psw).subscribe((response) => {
+      this.accountList=response;
+      console.log(this.accountList);
+      this.userNameEvent.emit(this.accountList.name);
+    });
   }
 
 }
