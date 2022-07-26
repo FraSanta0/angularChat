@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as io from 'socket.io-client';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-chat',
@@ -10,11 +11,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class ChatComponent implements OnInit {
   userName = '';
   message = '';
-  messageList: { message: string; userName: string; mine: boolean }[] = [];
+  messageList: { message: string; userName: string; date?: string; time?: string}[] = [];
   userList: string[] = [];
   socket: any;
+  pipe : DatePipe = new DatePipe('en-US');
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient
+    ) {}
 
   ngOnInit(): void {
     this.downloadMessages();
@@ -38,12 +42,13 @@ export class ChatComponent implements OnInit {
 
     this.socket.on(
       'message-broadcast',
-      (data: { message: string; userName: string }) => {
+      (data: { message: string; userName: string; date: string; time: string}) => {
         if (data) {
           this.messageList.push({
             message: data.message,
             userName: data.userName,
-            mine: false,
+            date:  data.date,
+            time: data.time
           });
         }
       }
@@ -57,7 +62,8 @@ export class ChatComponent implements OnInit {
     this.messageList.push({
       message: this.message,
       userName: this.userName,
-      mine: true,
+      date:  this.pipe.transform(new Date, 'dd/MM/yyyy')?.toString(),
+      time: this.pipe.transform(new Date, 'h:mm')?.toString()
     });
     //-----------------------------
 
@@ -65,6 +71,8 @@ export class ChatComponent implements OnInit {
       .post(this.urlAggiungi, {
         message: this.message,
         userName: this.userName,
+        date:  this.pipe.transform(new Date, 'dd/MM/yyyy')?.toString(),
+        time: this.pipe.transform(new Date, 'h:mm')?.toString()
       })
       .subscribe((res) => {
         console.log(res);
@@ -73,6 +81,7 @@ export class ChatComponent implements OnInit {
     //----------------------------
     this.message = '';
     console.log(this.messageList);
+    console.log(this.pipe.transform(new Date, 'h:mm'));
   }
 
   downloadMessages() {

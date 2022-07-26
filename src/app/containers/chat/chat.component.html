@@ -16,7 +16,6 @@
         <div
           class="chatbox__messages"
           *ngFor="let msg of messageList"
-          [ngClass]="{ mine: msg.mine }"
         >
 
 
@@ -25,7 +24,7 @@
           <img src="/w3images/bandmember.jpg" alt="Avatar">
           <h5>{{ msg.userName }}</h5>
           <p>{{ msg.message }}</p>
-          <span class="time-right">11:00</span>
+          <span class="time-right">{{msg.time}}</span>
         </div>
 
 
@@ -33,7 +32,7 @@
           <img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right">
           <h5>{{ msg.userName }}</h5>
           <p>{{ msg.message }}</p>
-          <span class="time-left">11:01</span>
+          <span class="time-left">{{msg.time}}</span>
         </div>
 
       </div>
