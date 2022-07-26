@@ -21,7 +21,7 @@
 
 
 
-        <div class="container" *ngIf="msg.mine==true">
+        <div class="container" *ngIf="msg.userName==userName">
           <img src="/w3images/bandmember.jpg" alt="Avatar">
           <h5>{{ msg.userName }}</h5>
           <p>{{ msg.message }}</p>
@@ -29,7 +29,7 @@
         </div>
 
 
-        <div class="container darker" *ngIf="msg.mine==false">
+        <div class="container darker" *ngIf="msg.userName!=userName">
           <img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right">
           <h5>{{ msg.userName }}</h5>
           <p>{{ msg.message }}</p>
