@@ -1,5 +1,9 @@
-<div class="div-input-username">
-  <input type="text" [(ngModel)]="userName">
-  <input type="text" [(ngModel)]="psw">
+<div class="div-input-username" *ngIf="registrazione==false">
+  <input type="text" placeholder="username" [(ngModel)]="userName">
+  <input type="text" placeholder="password" [(ngModel)]="psw">
   <button (click)="setUserName()">Login</button>
+  <button (click)="openRegistration()">Register</button>
+</div>
+<div *ngIf="registrazione==true">
+  <app-registration (regClose)="regChange()"></app-registration>
 </div>

@@ -13,6 +13,7 @@ export class UsernameComponent implements OnInit {
   psw ="";
   urlAccount="http://santaniellofrancesco.altervista.org/angularChat/api/account/readAccountPsw.php";
   accountList = { ID_account: 0, name: "", avatar: "", mail: "", psw: ""};
+  registrazione=false;
 
   constructor(
     private http: HttpClient
@@ -22,11 +23,19 @@ export class UsernameComponent implements OnInit {
   }
 
   setUserName() : void{
-    this.http.get<any>(this.urlAccount+"?psw="+this.psw).subscribe((response) => {
+    this.http.get<any>(this.urlAccount+"?name="+this.userName+"&psw="+this.psw).subscribe((response) => {
       this.accountList=response;
       console.log(this.accountList);
       this.userNameEvent.emit(this.accountList.name);
     });
+  }
+
+  openRegistration(): void{
+    this.registrazione=true;
+  }
+
+  regChange(){
+    this.registrazione=false;
   }
 
 }

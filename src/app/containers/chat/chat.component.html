@@ -3,7 +3,7 @@
     (userNameEvent)="userNameUpdate($event)"
     *ngIf="!userName"
   ></app-username>
-  <div class="div-chat">
+  <div class="div-chat" *ngIf="userName">
     <h1>component programming - chat app</h1>
     <div class="chatbox">
       <div class="chatbox__user-list">
