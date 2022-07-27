@@ -20,17 +20,17 @@
 
 
 
-        <div class="container" *ngIf="msg.userName==userName">
+        <div class="container" *ngIf="msg.id_account==ID_account">
           <img src="/w3images/bandmember.jpg" alt="Avatar">
-          <h5>{{ msg.userName }}</h5>
+          <h5>{{ msg.id_account }}</h5>
           <p>{{ msg.message }}</p>
           <span class="time-right">{{msg.time}}</span>
         </div>
 
 
-        <div class="container darker" *ngIf="msg.userName!=userName">
+        <div class="container darker" *ngIf="msg.id_account!=ID_account">
           <img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right">
-          <h5>{{ msg.userName }}</h5>
+          <h5>{{ msg.id_account }}</h5>
           <p>{{ msg.message }}</p>
           <span class="time-left">{{msg.time}}</span>
         </div>

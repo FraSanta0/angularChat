@@ -7,7 +7,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./username.component.css']
 })
 export class UsernameComponent implements OnInit {
-  @Output() userNameEvent = new EventEmitter<string>();
+  @Output() userNameEvent = new EventEmitter<{name:string, ID_account:string}>();
 
   userName ="";
   psw ="";
@@ -26,7 +26,9 @@ export class UsernameComponent implements OnInit {
     this.http.get<any>(this.urlAccount+"?name="+this.userName+"&psw="+this.psw).subscribe((response) => {
       this.accountList=response;
       console.log(this.accountList);
-      this.userNameEvent.emit(this.accountList.name);
+      let id_account= this.accountList.ID_account.toString();
+      let pack = {name:this.accountList.name,ID_account:id_account};
+      this.userNameEvent.emit(pack);
     });
   }
 

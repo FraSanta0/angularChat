@@ -11,7 +11,8 @@ import { DatePipe } from '@angular/common';
 export class ChatComponent implements OnInit {
   userName = '';
   message = '';
-  messageList: { message: string; userName: string; date?: string; time?: string}[] = [];
+  ID_account=0;
+  messageList: { message: string; id_account: number; date?: string; time?: string}[] = [];
   userList: string[] = [];
   socket: any;
   pipe : DatePipe = new DatePipe('en-US');
@@ -29,12 +30,12 @@ export class ChatComponent implements OnInit {
   messagesUrl =
     'http://santaniellofrancesco.altervista.org/angularChat/api/readMessageAll.php';
 
-  userNameUpdate(name: string): void {
-    this.socket = io.io('localhost:3000?userName=' + name);
-    this.userName = name;
+  userNameUpdate(pack: { name: string; ID_account: string }): void {
+    this.socket = io.io('localhost:3000?userName=' + pack.name);
+    this.userName = pack.name;
     console.log(this.userName);
 
-    this.socket.emit('set-user-name', name);
+    this.socket.emit('set-user-name', pack.name);
 
     this.socket.on('user-list', (userList: string[]) => {
       this.userList = userList;
@@ -42,11 +43,11 @@ export class ChatComponent implements OnInit {
 
     this.socket.on(
       'message-broadcast',
-      (data: { message: string; userName: string; date: string; time: string}) => {
+      (data: { message: string; id_account: number; date: string; time: string}) => {
         if (data) {
           this.messageList.push({
             message: data.message,
-            userName: data.userName,
+            id_account: data.id_account,
             date:  data.date,
             time: data.time
           });
@@ -61,7 +62,7 @@ export class ChatComponent implements OnInit {
     this.socket.emit('message', this.message);
     this.messageList.push({
       message: this.message,
-      userName: this.userName,
+      id_account: this.ID_account,
       date:  this.pipe.transform(new Date, 'dd/MM/yyyy')?.toString(),
       time: this.pipe.transform(new Date, 'h:mm')?.toString()
     });
@@ -70,7 +71,7 @@ export class ChatComponent implements OnInit {
     this.http
       .post(this.urlAggiungi, {
         message: this.message,
-        userName: this.userName,
+        id_account: this.ID_account,
         date:  this.pipe.transform(new Date, 'dd/MM/yyyy')?.toString(),
         time: this.pipe.transform(new Date, 'h:mm')?.toString()
       })
