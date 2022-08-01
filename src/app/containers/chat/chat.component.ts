@@ -31,8 +31,9 @@ export class ChatComponent implements OnInit {
     'http://santaniellofrancesco.altervista.org/angularChat/api/readMessageAll.php';
 
   userNameUpdate(pack: { name: string; ID_account: string }): void {
-    this.socket = io.io('localhost:3000?userName=' + pack.name);
+    this.socket = io.io('localhost:3000?id_account=' + pack.ID_account);
     this.userName = pack.name;
+    this.ID_account = parseInt(pack.ID_account);
     console.log(this.userName);
 
     this.socket.emit('set-user-name', pack.name);
@@ -51,6 +52,7 @@ export class ChatComponent implements OnInit {
             date:  data.date,
             time: data.time
           });
+          console.log(data);
         }
       }
     );
@@ -59,7 +61,7 @@ export class ChatComponent implements OnInit {
   }
 
   sendMessage(): void {
-    this.socket.emit('message', this.message);
+    this.socket.emit('message', {msg:this.message, date:this.pipe.transform(new Date, 'dd/MM/yyyy')?.toString(), time:this.pipe.transform(new Date, 'h:mm')?.toString()});
     this.messageList.push({
       message: this.message,
       id_account: this.ID_account,
