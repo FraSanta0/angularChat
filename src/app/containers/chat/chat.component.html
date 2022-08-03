@@ -1,112 +1,58 @@
-<div class="flex">
-  <aside class="w-72 fixed left-5 top-3 h-full bg-purple-500 rounded-lg" *ngIf="userName">
+<app-username
+  (userNameEvent)="userNameUpdate($event)"
+  *ngIf="!userName"
+></app-username>
 
-    <!-- <a
-  class="flex sm:flex-col items-center p-0 sm:px-6 sm:py-3 rounded-lg text-white sm:text-white sm:hover:bg-purple-700"
->
-  <svg
-    class="h-6 w-6"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="white"
-    aria-hidden="true"
+<div class="relative top-10 flex" *ngIf="userName">
+  <div
+    class="relative w-3/12 h-128 top-0 left-10 rounded-b-lg bg-purple-700 flex-col flex"
   >
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"
-    />
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"
-    />
-  </svg>
-  <span class="flex pl-4 sm:pl-0 font-semibold sm:font-normal sm:text-sm sm:pt-3 text-white sm:text-white">Prova
-  </span>
-</a> -->
-
-<div class="w-64 h-28">
-  <div class="flex ml-2 mt-6"> <img src="https://i.imgur.com/aq39RMA.jpg" width="80" height="80" class="rounded-full">
-    <div class="content-center"><span class="text-black absolute top-10 left-24 text-4xl">utente</span></div>
+    <app-sidebar></app-sidebar>
   </div>
-</div>
-
-<div class="relative bg-purple-500 pb-2"> <input type="text" class="bg-purple-700 w-full h-12 rounded focus:outline-none px-3 focus:shadow-md" placeholder="Search...">
-  <a class="absolute right-3 top-3 text-gray-300">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-    </svg>
-  </a>
-</div>
-
-<ul>
-  <a>
-    <li class="flex justify-between items-center mt-0 p-2 hover:bg-purple-700 cursor-pointer transition">
-      <div class="flex ml-2"> <img src="https://i.imgur.com/aq39RMA.jpg" width="40" height="40" class="rounded-full">
-          <div class="flex flex-col ml-2"> <span class="font-medium text-black">Mittente</span> <span class="text-sm text-gray-400 truncate w-32">messaggio</span> </div>
-      </div>
-      <div class="flex flex-col items-center"> <span class="text-gray-300">ora</span> <i class="fa fa-star text-green-400"></i> </div>
-    </li>
-  </a>
-  <a>
-    <li class="flex justify-between items-center mt-0 p-2 sm:hover:bg-purple-700 cursor-pointer transition">
-      <div class="flex ml-2"> <img src="https://i.imgur.com/aq39RMA.jpg" width="40" height="40" class="rounded-full">
-          <div class="flex flex-col ml-2"> <span class="font-medium text-black">Mittente</span> <span class="text-sm text-gray-400 truncate w-32">messaggio</span> </div>
-      </div>
-      <div class="flex flex-col items-center"> <span class="text-gray-300">ora</span> <i class="fa fa-star text-green-400"></i> </div>
-    </li>
-  </a>
-</ul>
-
-
-</aside>
-<main class="flex-1 ml-80">
-  <app-username
-    (userNameEvent)="userNameUpdate($event)"
-    *ngIf="!userName"
-  ></app-username>
-
-  <div class="h-96 bg-amber-400 p-10" *ngIf="userName">
-    <h1>component programming - chat app</h1>
-    <div class="chatbox">
-      <div class="chatbox__user-list">
-        <h2>user list</h2>
-        <div class="chatbox__user--active" *ngFor="let user of userList">
-          <p>{{ user }}</p>
-        </div>
-      </div>
-      <div class="messages_list">
-        <div
-          class="chatbox__messages"
-          *ngFor="let msg of messageList"
-        >
-
-
-
-        <div class="container" *ngIf="msg.id_account==ID_account">
-          <img src="/w3images/bandmember.jpg" alt="Avatar">
-          <h5>{{ msg.id_account }}</h5>
-          <p>{{ msg.message }}</p>
-          <span class="time-right">{{msg.time}}</span>
-        </div>
-
-
-        <div class="container darker" *ngIf="msg.id_account!=ID_account">
-          <img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right">
-          <h5>{{ msg.id_account }}</h5>
-          <p>{{ msg.message }}</p>
-          <span class="time-left">{{msg.time}}</span>
-        </div>
-
-      </div>
-      </div>
+  <div class="relative top-0 left-10 w-8/12 h-128">
+    <div class="h-16 bg-purple-700">
+      <app-navbar></app-navbar>
     </div>
-    <input type="text" [(ngModel)]="message" />
-    <button (click)="sendMessage()">Send</button>
-  </div>
-</main>
-</div>
+    <div class="h-99">
+      <main class="relative w-full flex-1">
+        <div class="h-98.5 bg-amber-400 pt-6 pb-0 pl-8" *ngIf="userName">
+          <div class="chatbox h-98.5">
+            <div class="chatbox__user-list">
+              <div class="chatbox__user--active" *ngFor="let user of userList">
+                <p>{{ user }}</p>
+              </div>
+            </div>
+            <div class="overflow-auto h-98.5 justify-end content-end">
+              <div class="chatbox__messages" *ngFor="let msg of messageList">
+                <div class="container" *ngIf="msg.id_account == ID_account">
+                  <img src="/w3images/bandmember.jpg" alt="Avatar" />
+                  <h5>{{ msg.id_account }}</h5>
+                  <p>{{ msg.message }}</p>
+                  <span class="time-right">{{ msg.time }}</span>
+                </div>
 
+                <div
+                  class="container darker"
+                  *ngIf="msg.id_account != ID_account"
+                >
+                  <img
+                    src="/w3images/avatar_g2.jpg"
+                    alt="Avatar"
+                    class="right"
+                  />
+                  <h5>{{ msg.id_account }}</h5>
+                  <p>{{ msg.message }}</p>
+                  <span class="time-left">{{ msg.time }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="w-full relative border-2 border-solid border-purple-700 rounded-lg">
+          <input type="text" [(ngModel)]="message" class="w-full rounded-lg pl-1"/>
+          <button (click)="sendMessage()" class="absolute top-0 right-0 pr-1">Send</button>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
