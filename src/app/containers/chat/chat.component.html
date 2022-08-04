@@ -7,21 +7,16 @@
   <div
     class="relative w-3/12 h-128 top-0 left-10 rounded-b-lg bg-purple-700 flex-col flex"
   >
-    <app-sidebar></app-sidebar>
+    <app-sidebar (eventEmitter)="stanza($event)"></app-sidebar>
   </div>
   <div class="relative top-0 left-10 w-8/12 h-128">
     <div class="h-16 bg-purple-700">
-      <app-navbar></app-navbar>
+      <app-navbar [userName]="userName"></app-navbar>
     </div>
     <div class="h-99">
       <main class="relative w-full flex-1">
         <div class="h-98.5 bg-amber-400 pt-6 pb-0 pl-8" *ngIf="userName">
           <div class="chatbox h-98.5">
-            <div class="chatbox__user-list">
-              <div class="chatbox__user--active" *ngFor="let user of userList">
-                <p>{{ user }}</p>
-              </div>
-            </div>
             <div class="overflow-auto h-98.5 justify-end content-end">
               <div class="chatbox__messages" *ngFor="let msg of messageList">
                 <div class="container" *ngIf="msg.id_account == ID_account">
@@ -55,4 +50,8 @@
       </main>
     </div>
   </div>
+</div>
+<div class="position absolute left-0 bottom-0">
+  <button (click)="messaggioStanza()">invia</button><br>
+  <button (click)="disconnect()">disconnetiti</button><br>
 </div>

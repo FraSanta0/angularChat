@@ -9,6 +9,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { FormAddChatComponent } from './components/form-add-chat/form-add-chat.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -17,12 +19,15 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     UsernameComponent,
     RegistrationComponent,
     SidebarComponent,
-    NavbarComponent
+    NavbarComponent,
+    FormAddChatComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

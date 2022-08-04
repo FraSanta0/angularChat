@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as io from 'socket.io-client';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -11,9 +11,10 @@ import { DatePipe } from '@angular/common';
 export class ChatComponent implements OnInit {
   userName = '';
   message = '';
+  connected=false;
   ID_account=0;
   messageList: { message: string; id_account: number; date?: string; time?: string}[] = [];
-  userList: string[] = [];
+  userList: {userName: string, room:number}[] = [];
   socket: any;
   pipe : DatePipe = new DatePipe('en-US');
 
@@ -23,41 +24,27 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.downloadMessages();
+    if(localStorage.getItem('userName')){
+      this.userName=localStorage.getItem('userName')!;
+      console.log(localStorage.getItem('userName'));
+    }
   }
 
   urlAggiungi =
     'http://santaniellofrancesco.altervista.org/angularChat/api/addMessage.php';
   messagesUrl =
     'http://santaniellofrancesco.altervista.org/angularChat/api/readMessageAll.php';
+    messageUrlListachat =
+    'http://santaniellofrancesco.altervista.org/angularChat/api/readMessageListachat.php';
 
   userNameUpdate(pack: { name: string; ID_account: string }): void {
-    this.socket = io.io('localhost:3000?id_account=' + pack.ID_account);
+
     this.userName = pack.name;
     this.ID_account = parseInt(pack.ID_account);
     console.log(this.userName);
+    localStorage.setItem('userName', this.userName);
 
-    this.socket.emit('set-user-name', pack.name);
-
-    this.socket.on('user-list', (userList: string[]) => {
-      this.userList = userList;
-    });
-
-    this.socket.on(
-      'message-broadcast',
-      (data: { message: string; id_account: number; date: string; time: string}) => {
-        if (data) {
-          this.messageList.push({
-            message: data.message,
-            id_account: data.id_account,
-            date:  data.date,
-            time: data.time
-          });
-          console.log(data);
-        }
-      }
-    );
-
-    this.downloadMessages();
+    //this.downloadMessages();
   }
 
   sendMessage(): void {
@@ -87,12 +74,73 @@ export class ChatComponent implements OnInit {
     console.log(this.pipe.transform(new Date, 'h:mm'));
   }
 
-  downloadMessages() {
+  downloadMessages(id_chat?: number) {
     if (this.userName) {
-      this.http.get<any>(this.messagesUrl).subscribe((response) => {
+      console.log(id_chat);
+      let queryParams = new HttpParams().append('id_listachat',id_chat!.toString());
+      this.http.get<any>(this.messageUrlListachat,{params:queryParams}).subscribe((response) => {
         this.messageList=response.body;
         console.log(this.messageList);
       });
     }
+  }
+
+  stanza(room: number){
+    if(this.connected){
+      this.disconnect();
+    }
+    this.connected=true;
+    this.socket = io.io('localhost:3000?id_account=' + this.ID_account);
+    this.socket.emit('set-user-name', this.userName);
+    console.log(this.userList);
+    this.socket.emit('create',room);
+    this.downloadMessages(room);
+    this.socket.on('user-list', (userList: {userName: string, room: number}[]) => {
+      this.userList = userList;
+    });
+
+    this.socket.on(
+      'message-broadcast',
+      (data: { message: string; id_account: number; date: string; time: string}) => {
+        if (data) {
+          this.messageList.push({
+            message: data.message,
+            id_account: data.id_account,
+            date:  data.date,
+            time: data.time
+          });
+          console.log(data);
+        }
+      }
+    );
+
+    this.socket.on(
+      'message2',
+      (data: { message: string; id_account: number; date: string; time: string}) => {
+        if (data) {
+          this.messageList.push({
+            message: data.message,
+            id_account: data.id_account,
+            date:  data.date,
+            time: data.time
+          });
+          console.log(data);
+        }
+      }
+    );
+  }
+
+  messaggioStanza(){
+    this.socket.emit('messageRoom', {msg:this.message, date:this.pipe.transform(new Date, 'dd/MM/yyyy')?.toString(), time:this.pipe.transform(new Date, 'h:mm')?.toString()});
+    this.messageList.push({
+      message: this.message,
+      id_account: this.ID_account,
+      date:  this.pipe.transform(new Date, 'dd/MM/yyyy')?.toString(),
+      time: this.pipe.transform(new Date, 'h:mm')?.toString()
+    });
+  }
+
+  disconnect(){
+    this.socket.emit('disconnected',null);
   }
 }

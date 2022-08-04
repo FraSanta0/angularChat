@@ -1,0 +1,10 @@
+<div class="relative m-auto top-36 w-4/12 h-2/5 border-2 border-solid rounded-lg border-purple-700 flex-col">
+  <form #f="ngForm" (ngSubmit)="addChat(f)">
+    <div class="m-auto w-6/12 flex-col">
+    <input ngModel name="name" type="text" placeholder="name" class="w-full my-6 border-2 border-solid rounded-lg border-purple-700">
+    <div class="m-auto w-6/12 flex-col">
+      <button class="w-full my-6 border-2 border-solid rounded-lg border-purple-700 hover:bg-purple-800 hover:text-white focus:border-3">Add</button>
+    </div>
+  </div>
+  </form>
+</div>
