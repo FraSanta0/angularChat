@@ -45,13 +45,9 @@
         </div>
         <div class="w-full relative border-2 border-solid border-purple-700 rounded-lg">
           <input type="text" [(ngModel)]="message" class="w-full rounded-lg pl-1"/>
-          <button (click)="sendMessage()" class="absolute top-0 right-0 pr-1">Send</button>
+          <button (click)="messaggioStanza()" class="absolute top-0 right-0 pr-1">Send</button>
         </div>
       </main>
     </div>
   </div>
-</div>
-<div class="position absolute left-0 bottom-0">
-  <button (click)="messaggioStanza()">invia</button><br>
-  <button (click)="disconnect()">disconnetiti</button><br>
 </div>

@@ -25,8 +25,8 @@ export class SidebarComponent implements OnInit {
   "http://santaniellofrancesco.altervista.org/angularChat/api/listachat/readListachatAll.php";
   listaChat : {ID_listachat:string, nome: string, dataCreazione:string, descrizione: string}[] = [];
 
-  emitChat(id_chat: number){
-    this.eventEmitter.emit(id_chat);
+  emitChat(id_chat: string){
+    this.eventEmitter.emit(parseInt(id_chat));
   }
 
   openAddChat(){

@@ -57,7 +57,7 @@
 
 <div class="w-full h-98 flex-col overflow-auto">
   <ul>
-    <a *ngFor="let chat of listaChat" (click)="emitChat(1001)">
+    <a *ngFor="let chat of listaChat" (click)="emitChat(chat.ID_listachat)">
       <li
         class="flex justify-between items-center mt-0 p-2 hover:bg-purple-800 cursor-pointer transition"
       >

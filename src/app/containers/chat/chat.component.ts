@@ -12,6 +12,7 @@ export class ChatComponent implements OnInit {
   userName = '';
   message = '';
   connected=false;
+  id_listachat?: number;
   ID_account=0;
   messageList: { message: string; id_account: number; date?: string; time?: string}[] = [];
   userList: {userName: string, room:number}[] = [];
@@ -26,6 +27,7 @@ export class ChatComponent implements OnInit {
     this.downloadMessages();
     if(sessionStorage.getItem('userName')){
       this.userName=sessionStorage.getItem('userName')!;
+      this.ID_account=parseInt(sessionStorage.getItem('ID_account')!);
       console.log(sessionStorage.getItem('userName'));
     }
   }
@@ -43,6 +45,7 @@ export class ChatComponent implements OnInit {
     this.ID_account = parseInt(pack.ID_account);
     console.log(this.userName);
     sessionStorage.setItem('userName', this.userName);
+    sessionStorage.setItem('ID_account', pack.ID_account);
 
     //this.downloadMessages();
   }
@@ -77,6 +80,7 @@ export class ChatComponent implements OnInit {
   downloadMessages(id_chat?: number) {
     if (this.userName) {
       console.log(id_chat);
+      this.id_listachat=id_chat;
       let queryParams = new HttpParams().append('id_listachat',id_chat!.toString());
       this.http.get<any>(this.messageUrlListachat,{params:queryParams}).subscribe((response) => {
         this.messageList=response.body;
@@ -138,6 +142,20 @@ export class ChatComponent implements OnInit {
       date:  this.pipe.transform(new Date, 'dd/MM/yyyy')?.toString(),
       time: this.pipe.transform(new Date, 'h:mm')?.toString()
     });
+
+    this.http
+      .post(this.urlAggiungi, {
+        message: this.message,
+        id_account: this.ID_account,
+        date:  this.pipe.transform(new Date, 'dd/MM/yyyy')?.toString(),
+        time: this.pipe.transform(new Date, 'h:mm')?.toString(),
+        id_listachat: this.id_listachat
+      })
+      .subscribe((res) => {
+        console.log(res);
+      });
+
+      this.message = '';
   }
 
   disconnect(){
