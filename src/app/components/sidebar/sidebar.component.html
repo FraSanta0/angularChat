@@ -57,7 +57,7 @@
 
 <div class="w-full h-98 flex-col overflow-auto">
   <ul>
-    <a (click)="emitChat(1001)">
+    <a *ngFor="let chat of listaChat" (click)="emitChat(1001)">
       <li
         class="flex justify-between items-center mt-0 p-2 hover:bg-purple-800 cursor-pointer transition"
       >
@@ -69,7 +69,7 @@
             class="rounded-full"
           />
           <div class="flex flex-col ml-2">
-            <span class="font-medium text-black">{{ userName }}</span>
+            <span class="font-medium text-black">{{ chat.nome }}</span>
             <span class="text-sm text-gray-400 truncate w-32">messaggio</span>
           </div>
         </div>
@@ -80,27 +80,5 @@
       </li>
     </a>
 
-    <a (click)="emitChat(1002)">
-      <li
-        class="flex justify-between items-center mt-0 p-2 hover:bg-purple-800 cursor-pointer transition"
-      >
-        <div class="flex ml-2">
-          <img
-            src="https://i.imgur.com/aq39RMA.jpg"
-            width="40"
-            height="40"
-            class="rounded-full"
-          />
-          <div class="flex flex-col ml-2">
-            <span class="font-medium text-black">{{ userName }}</span>
-            <span class="text-sm text-gray-400 truncate w-32">messaggio</span>
-          </div>
-        </div>
-        <div class="flex flex-col items-center">
-          <span class="text-gray-300">ora</span>
-          <i class="fa fa-star text-green-400"></i>
-        </div>
-      </li>
-    </a>
   </ul>
 </div>
