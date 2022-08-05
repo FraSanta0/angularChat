@@ -24,9 +24,9 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.downloadMessages();
-    if(localStorage.getItem('userName')){
-      this.userName=localStorage.getItem('userName')!;
-      console.log(localStorage.getItem('userName'));
+    if(sessionStorage.getItem('userName')){
+      this.userName=sessionStorage.getItem('userName')!;
+      console.log(sessionStorage.getItem('userName'));
     }
   }
 
@@ -42,7 +42,7 @@ export class ChatComponent implements OnInit {
     this.userName = pack.name;
     this.ID_account = parseInt(pack.ID_account);
     console.log(this.userName);
-    localStorage.setItem('userName', this.userName);
+    sessionStorage.setItem('userName', this.userName);
 
     //this.downloadMessages();
   }

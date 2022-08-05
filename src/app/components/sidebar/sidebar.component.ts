@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -8,7 +9,9 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private route : Router
+  ) { }
   @Output() eventEmitter: EventEmitter<number> = new EventEmitter<number>();
 
   ngOnInit(): void {
@@ -21,6 +24,6 @@ export class SidebarComponent implements OnInit {
   }
 
   openAddChat(){
-
+    this.route.navigateByUrl('/addChat');
   }
 }
